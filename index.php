@@ -8,7 +8,17 @@
 
 require_once ('inc/dbconnector.php');
 
-//include_once ('inc/nav.php');
+$logedin = false;
+$user = null;
+
+session_start();
+
+if($_SESSION['login'] = true && isset($_SESSION['username'])){
+    $logedin = true;
+    $user = $_SESSION['username'];
+}
+
+//
 
 ?>
 
@@ -23,10 +33,15 @@ require_once ('inc/dbconnector.php');
     <header>
         <h1>Event-Anmelde-Tool</h1>
 
+        <?php if(!empty($user)){
+
+            echo "<p> Hallo, $user </p>";
+        }  ?>
+
     </header>
 
     <nav>
-        <p>Navigation: ....</p>
+        <?php include_once ('inc/nav.php'); ?>
     </nav>
 
     <main>

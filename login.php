@@ -6,6 +6,7 @@
  * Time: 13:42
  */
 
+require_once ('inc/dbconnector.php');
 
 $username = '';
 $error = '';
@@ -35,24 +36,30 @@ if(!empty($_POST)){
 
         $query = "Select password from user where username = '" . $username . "'";
         $stmt = $db -> query($query);
-        $row = $stmt -> fetch();
-        if( $row['count'] > 0){
-            //username valid
+
+        if( $stmt ->rowCount() > 0){
+            $row = $stmt -> fetch();
+            $password_hash = $row['password'];
+
+            if(password_verify($password,$password_hash)){
+                //valid password -> save session
+                session_start();
+                $_SESSION['username'] = $username;
+                $_SESSION['login'] = true;
+
+                // back to index page
+                header('Location: index.php');
+
+            }else{
+                //invalid password
+                $error .= "Benutzername und/oder Passwort ungültig <br>" ;
+            }
 
         }else{
             //username invalid
             $error .= "Benutzername und/oder Passwort ungültig <br>" ;
-            $username = '';
         }
 
-        $hash = password_hash($password,PASSWORD_DEFAULT);
-
-        $insert = "Insert into user (username, forename, surename, password) values ('$username', '$forename', '$surename', '$hash')";
-        if($db->exec($insert)){
-            header('Location: login.php');
-        }else{
-            $error .= "Insert fehlgeschlagen <br>";
-        }
     }
 }
 
@@ -70,6 +77,16 @@ if(!empty($_POST)){
 <body>
         <h1>Event-Anmelde-: Login</h1>
         <p>Melde dich bitte an:</p>
+
+        <nav>
+            <?php include_once ('inc/nav.php'); ?>
+        </nav>
+
+        <?php
+        if($error != ''){
+            echo "<p> $error </p>";
+        }
+        ?>
 
 
         <form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
