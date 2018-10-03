@@ -75,35 +75,40 @@ if(!empty($_POST)){
 </head>
 
 <body>
-        <h1>Event-Anmelde-: Login</h1>
-        <p>Melde dich bitte an:</p>
+
+        <header>
+            <h1>Event-Anmelde-: Login</h1>
+            <p>Melde dich bitte an:</p>
+        </header>
 
         <nav>
             <?php include_once ('inc/nav.php'); ?>
         </nav>
 
-        <?php
-        if($error != ''){
-            echo "<p> $error </p>";
-        }
-        ?>
+        <main>
+            <?php
+            if($error != ''){
+                echo "<p> $error </p>";
+            }
+            ?>
 
 
-        <form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
+            <form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 
-            <label>
-                Benutzername: <br>
-                <input type="text" name="username" value="<?php echo $username?>">
-            </label>
-            <br>
-            <label>
-                Passwort:<br>
-                <input type="password" name="password">
-            </label>
-            <br>
-            <input type="submit" value="Anmelden">
+                <label>
+                    Benutzername: <br>
+                    <input type="text" name="username" value="<?php echo $username?>">
+                </label>
+                <br>
+                <label>
+                    Passwort:<br>
+                    <input type="password" name="password">
+                </label>
+                <br>
+                <input type="submit" value="Anmelden">
 
-        </form>
+            </form>
+        </main>
 
 
 </body>

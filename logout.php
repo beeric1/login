@@ -22,10 +22,25 @@ if($_SESSION['login']){
 
 ?>
 
-<h1>Logout</h1>
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+    <title>Anmelde-Tool: Logout</title>
 
-<nav>
-    <?php include_once ('inc/nav.php'); ?>
-</nav>
+</head>
 
-<?php echo $message; ?>
+<body>
+
+    <h1>Logout</h1>
+
+    <nav>
+        <?php include_once ('inc/nav.php'); ?>
+    </nav>
+
+    <main>
+        <?php echo $message; ?>
+    </main>
+
+</body>
+
+</html>

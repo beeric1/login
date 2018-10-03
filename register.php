@@ -95,46 +95,52 @@ if(!empty($_POST)){
 </head>
 
 <body>
-    <h1>Event-Anmelde-Tool: Registrieren</h1>
-    <p>Fülle das Formular aus um dich zu registrieren. Alle Felder müssen ausgefüllt werden.</p>
+    <header>
+        <h1>Event-Anmelde-Tool: Registrieren</h1>
+    </header>
+
 
     <nav>
         <?php include_once ('inc/nav.php'); ?>
     </nav>
 
-    <?php
-        if($error != ''){
-            echo "<p> $error </p>";
-        }
-    ?>
+    <main
+        ><?php
+            if($error != ''){
+                echo "<p> $error </p>";
+            }
+        ?>
 
-    <form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
-
-        <label>
-            Benutzername: (max 25 Zeichen) <br>
-            <input type="text" name="username" value="<?php echo $username?>">
-        </label>
-        <br>
-        <label>
-            Passwort: (min 8 und max 25 Zeichen) <br>
-            <input type="password" name="password">
-        </label>
-        <br>
-        <label>
-            Vorname: (max 50 Zeichen) <br>
-            <input type="text" name="forename" value="<?php echo $forename?>">
-        </label>
-        <br>
-        <label>
-            Nachname: (max 50 Zeichen) <br>
-            <input type="text" name="surename" value="<?php echo $surename?>">
-        </label>
-        <br>
-        <input type="submit" value="Registrieren">
-        <input type="reset" value="Zurücksetzen">
+        <p>Fülle das Formular aus um dich zu registrieren. Alle Felder müssen ausgefüllt werden.</p>
 
 
-    </form>
+        <form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
+
+            <label>
+                Benutzername: (max 25 Zeichen) <br>
+                <input type="text" name="username" value="<?php echo $username?>">
+            </label>
+            <br>
+            <label>
+                Passwort: (min 8 und max 25 Zeichen) <br>
+                <input type="password" name="password">
+            </label>
+            <br>
+            <label>
+                Vorname: (max 50 Zeichen) <br>
+                <input type="text" name="forename" value="<?php echo $forename?>">
+            </label>
+            <br>
+            <label>
+                Nachname: (max 50 Zeichen) <br>
+                <input type="text" name="surename" value="<?php echo $surename?>">
+            </label>
+            <br>
+            <input type="submit" value="Registrieren">
+            <input type="reset" value="Zurücksetzen">
+        </form>
+
+    </main>
 
 
 </body>
