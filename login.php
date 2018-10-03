@@ -78,6 +78,10 @@ if(!empty($_POST)){
         <h1>Event-Anmelde-: Login</h1>
         <p>Melde dich bitte an:</p>
 
+        <nav>
+            <?php include_once ('inc/nav.php'); ?>
+        </nav>
+
         <?php
         if($error != ''){
             echo "<p> $error </p>";

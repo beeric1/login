@@ -98,6 +98,10 @@ if(!empty($_POST)){
     <h1>Event-Anmelde-Tool: Registrieren</h1>
     <p>Fülle das Formular aus um dich zu registrieren. Alle Felder müssen ausgefüllt werden.</p>
 
+    <nav>
+        <?php include_once ('inc/nav.php'); ?>
+    </nav>
+
     <?php
         if($error != ''){
             echo "<p> $error </p>";
