@@ -43,7 +43,13 @@ if(!isset($_GET['eventid'])){
         if(isset($_GET['force']) && $_GET['force'] == 1){
 
             $userid = $_SESSION['id'];
-            $insert = "Insert into event_has_user (event_id, user_id, state) values ('$eventid', '$userid', '$surename', '$hash')";
+            // state 1 = signed in
+            $insert = "Insert into event_has_user (event_id, user_id, state) values ('$eventid', '$userid', '1')";
+            if($db->exec($insert)){
+                header('Location: user.php');
+            }else{
+                $error .= "Insert fehlgeschlagen <br>";
+            }
         }
 
     }else{
