@@ -34,7 +34,7 @@ if(!empty($_POST)){
 
         //check if username on db, if yes validate password with hash
 
-        $query = "Select password from user where username = '" . $username . "'";
+        $query = "Select password, id from user where username = '" . $username . "'";
         $stmt = $db -> query($query);
 
         if( $stmt ->rowCount() > 0){
@@ -46,6 +46,7 @@ if(!empty($_POST)){
                 session_start();
                 $_SESSION['username'] = $username;
                 $_SESSION['login'] = true;
+                $_SESSION['id'] = $row['id'];
 
                 // back to index page
                 header('Location: index.php');
