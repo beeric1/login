@@ -47,7 +47,7 @@ if($_SESSION['login'] = true && isset($_SESSION['username'])){
     <main>
         <h2>Events</h2>
         <?php
-            $query = "Select id, title, description, start, end, deadline, price, maxPeople from event";
+            $query = "Select id, title, description, start, end, deadline, price, maxPeople from event where deadline > NOW()";
             $result = $db -> query($query);
             $resultArray = $result -> fetchAll();
 
