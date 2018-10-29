@@ -61,6 +61,11 @@ if($_SESSION['login']){
         <p>Benutzername: <?php echo " $user"?></p>
         <p>Vorname: <?php echo " $forename"?></p>
         <p>Nachname: <?php echo " $surename"?></p>
+        <?php
+            if($_SESSION['admin'] == 1){
+                echo "<p>Du bist Admin!</p>";
+            }
+        ?>
 
         <h2>Deine Events</h2>
 
