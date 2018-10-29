@@ -16,6 +16,7 @@ session_start();
 if($_SESSION['login'] = true && isset($_SESSION['username'])){
     $logedin = true;
     $user = $_SESSION['username'];
+    $userid = $_SESSION['id'];
 }
 
 //
@@ -47,7 +48,20 @@ if($_SESSION['login'] = true && isset($_SESSION['username'])){
     <main>
         <h2>Events</h2>
         <?php
-            $query = "Select id, title, description, start, end, deadline, price, maxPeople from event where deadline > NOW()";
+            //nur events, bei denen man sich noch anmelden kann (deadline noch nicht erreicht , max teilnehmer zahl nicht erreicht, nicht schon angemeldet)
+            if(empty($user)){
+                //Nicht eingeloggt
+                $query = "Select id, title, description, start, end, deadline, price, maxPeople from event 
+                    where deadline > NOW()
+                    and (maxPeople is null or maxPeople > (SELECT count(user_id) from event_has_user where event_id = id))";
+            }else{
+                //eingeloggt
+                $query = "Select id, title, description, start, end, deadline, price, maxPeople from event 
+                    where deadline > NOW()
+                    and (maxPeople is null or maxPeople > (SELECT count(user_id) from event_has_user where event_id = id))
+                    and " . $userid . " NOT IN (SELECT user_id from event_has_user where state = 1 and event_id = id)";
+            }
+
             $result = $db -> query($query);
             $resultArray = $result -> fetchAll();
 
