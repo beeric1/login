@@ -5,17 +5,14 @@
  * Date: 03.10.2018
  * Time: 11:03
  *
- * TODO event erstellen
- * TODO eigener Event ansehen
  */
-
 
 
 require_once ('inc/dbconnector.php');
 $user = '';
 session_start();
 
-if($_SESSION['login']){
+if(isset($_SESSION['login']) && $_SESSION['login'] == 1){
     $user = $_SESSION['username'];
     $userid =  $_SESSION['id'];
 
@@ -31,8 +28,9 @@ if($_SESSION['login']){
         $error .= "Query fehlgeschlagen (User exisitiert nicht) <br>";
     }
 
-
-
+}else{
+    //not logged in
+    header('Location: login.php');
 }
 ?>
 
