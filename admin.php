@@ -21,15 +21,15 @@ if(isset($_SESSION['login']) && $_SESSION['login'] == 1){
 }
 
 $title = '';
-$description = null;
+$description = '';
 $startdate = '';
 $starttime = '12:00';
 $enddate = '';
 $endtime = '12:00';
-$dealinedate = '';
-$dealinetime = '12:00';
+$deadlinedate = '';
+$deadlinetime = '12:00';
 $price = 0;
-$maxPeople = null;
+$maxPeople = '';
 
 if(!empty($_POST)){
 
@@ -42,7 +42,7 @@ if(!empty($_POST)){
 
     //optional
     if(!empty($_POST['description'])){
-        $description = trim(htmlspecialchars($_POST['description']));
+        $description = htmlspecialchars($_POST['description']);
     }
 
     //mandatory
@@ -84,28 +84,28 @@ if(!empty($_POST)){
             $endtime = '';
         }
     }else{
-        $error .= "Startzeit muss ausgefüllt sein <br>";
+        $error .= "Endzeit muss ausgefüllt sein <br>";
     }
 
     //mandatory
-    if(!empty($_POST['dealinedate'])){
-        $dealinedate = trim(htmlspecialchars($_POST['dealinedate']));
-        if(!preg_match("([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))",$dealinedate)){
-            $error .= "Anmeldeschluss-Datum ist kein Datum $dealinedate <br>";
-            $dealinedate = '';
+    if(!empty($_POST['deadlinedate'])){
+        $deadlinedate = trim(htmlspecialchars($_POST['deadlinedate']));
+        if(!preg_match("([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))",$deadlinedate)){
+            $error .= "Anmeldeschluss-Datum ist kein Datum $deadlinedate <br>";
+            $deadlinedate = '';
         }
     }else{
         $error .= "Anmeldeschluss-Datum muss ausgefüllt sein <br>";
     }
-    //madatory
+    //mandatory
     if(!empty($_POST['deadlinetime'])){
-        $dealinetime = trim(htmlspecialchars($_POST['deadlinetime']));
-        if(!preg_match("/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/" ,$dealinetime)){
-            $error .= "Deadline-Zeit ist keine Zeit $dealinetime <br>";
-            $dealinetime = '';
+        $deadlinetime = trim(htmlspecialchars($_POST['deadlinetime']));
+        if(!preg_match("/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/" ,$deadlinetime)){
+            $error .= "Deadline-Zeit ist keine Zeit $deadlinetime <br>";
+            $deadlinetime = '';
         }
     }else{
-        $error .= "Startzeit muss ausgefüllt sein <br>";
+        $error .= "Teilenahmeschluss-Zeit muss ausgefüllt sein <br>";
     }
 
     //mandatory
@@ -128,7 +128,32 @@ if(!empty($_POST)){
             //ok
         }else{
             $error .= "Maximale Teilnehmeranzahl muss eine Zahl sein: $maxPeople <br>";
-            $maxPeople = null;
+            $maxPeople = '';
+        }
+    }
+
+    //everything ok, save in db
+    if($error == ''){
+        $start = $startdate . ' ' . $starttime . ':00';
+        $end = $enddate . ' ' . $endtime . ':00';
+        $deadline = $deadlinedate . ' ' . $deadlinetime . ':00';
+
+        if($maxPeople == '' && $description == ''){
+            $insert = "Insert into event (title, start, end, deadline, price) values ('$title', '$start', '$end', '$deadline', $price)";
+        }elseif ($maxPeople == ''){
+            $insert = "Insert into event (title, description, start, end, deadline, price) values ('$title', '$description', '$start', '$end', '$deadline', $price)";
+        }elseif ($description == ''){
+            $insert = "Insert into event (title, start, end, deadline, price, maxPeople) values ('$title', '$start', '$end', '$deadline', $price, $maxPeople)";
+        }else{
+            $insert = "Insert into event (title, description, start, end, deadline, price, maxPeople) values ('$title', '$description', '$start', '$end', '$deadline', $price, $maxPeople)";
+        }
+
+
+        if($db->exec($insert)){
+            //insert ok
+            header('Location: login.php');
+        }else{
+            $error .= "Insert fehlgeschlagen <br>";
         }
     }
 
@@ -177,7 +202,7 @@ if(!empty($_POST)){
                 <br>
                 <label>
                     Beschreibung: (optional) <br>
-                    <textarea rows="4" cols="50" value="<?php echo $description?>"></textarea>
+                    <textarea rows="4" cols="50" name="description"><?php echo $description?></textarea>
                 </label>
                 <br>
                 <label>
@@ -192,7 +217,7 @@ if(!empty($_POST)){
                 <br>
                 <label>
                     Anmeldeschluss: <br>
-                    <input type="date" name="deadlinedate" value="<?php echo $dealinedate?>"> <input type="time" name="dealinetime" value="<?php echo $dealinetime?>">
+                    <input type="date" name="deadlinedate" value="<?php echo $deadlinedate?>"> <input type="time" name="deadlinetime" value="<?php echo $deadlinetime?>">
                 </label>
                 <br>
                 <label>
