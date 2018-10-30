@@ -151,7 +151,8 @@ if(!empty($_POST)){
 
         if($db->exec($insert)){
             //insert ok
-            header('Location: login.php');
+            header('Location: index.php');
+
         }else{
             $error .= "Insert fehlgeschlagen <br>";
         }
