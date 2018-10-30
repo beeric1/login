@@ -160,6 +160,24 @@ if(!empty($_POST)){
 
 }
 
+if(!empty($_GET)){
+    $eventid = htmlspecialchars($_GET['id']);
+    $delete1 = "Delete from event where id = ". $eventid;
+    $delete2 = "Delete from event_has_user where event_id = " . $eventid;
+    if($db->exec($delete2)){
+        //ok
+        if($db->exec($delete1)){
+            //ok
+            header('Location: index.php');
+        }else{
+            $error .= "Teilnahmen löschen fehlgeschlagen <br>";
+        }
+    }else{
+        $error .= "Löschen fehlgeschlagen <br>";
+    }
+
+}
+
 ?>
 
 
@@ -244,10 +262,11 @@ if(!empty($_POST)){
         $resultArray = $result -> fetchAll();
 
         echo '<table>';
-        echo '<tr><th>Titel</th><th>Beschreibung</th><th>Anzeigen</th></tr>';
+        echo '<tr><th>Titel</th><th>Beschreibung</th><th>Anzeigen</th><th>Löschen</th></tr>';
         foreach($resultArray as $row){
             echo "<tr><td>$row[title]</td> <td>$row[description]</td>  <td>";
-            echo "<form method='get' action='eventadmin.php'> <input type='hidden' name='id' value='$row[id]'> <input type='submit' value='Anzeigen'> </form></td>  </tr>";
+            echo "<form method='get' action='eventadmin.php'> <input type='hidden' name='id' value='$row[id]'> <input type='submit' value='anzeigen'> </form></td>";
+            echo "<td><form method='get' action='admin.php'> <input type='hidden' name='id' value='$row[id]'> <input type='submit' value='löschen'> </form></td></tr>";
         }
         echo "</table";
         ?>

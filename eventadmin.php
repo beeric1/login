@@ -89,9 +89,16 @@ if(isset($_SESSION['login']) && $_SESSION['login'] == 1){
         $resultArray = $result -> fetchAll();
 
         echo '<table>';
-        echo '<tr><th>Vorname</th><th>Nachname</th><th>Status</th> <th>Dokumente</th> <th>Zahlung</th></tr>';
+        echo '<tr><th>Vorname</th><th>Nachname</th><th>Angemeldet</th> <th>Dokumente</th> <th>Zahlung</th></tr>';
         foreach($resultArray as $row){
-            echo "<tr><td>$row[forename]</td><td>$row[surename]</td><td>$row[state]</td><td>$row[documents]</td><td>$row[payed]</td></tr>";
+            $angemeldet = 'nein';
+            $dokument = 'nein';
+            $zahlung = 'nein';
+            if($row['state'] == 1){$angemeldet = 'ja';}
+            if($row['documents'] == 1){$dokument = 'ja';}
+            if($row['payed'] == 1){$zahlung = 'ja';}
+
+            echo "<tr><td>$row[forename]</td><td>$row[surename]</td><td>$angemeldet</td><td>$dokument</td><td>$zahlung</td></tr>";
         }
         echo '</table>';
 

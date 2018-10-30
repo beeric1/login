@@ -86,7 +86,7 @@ if($_SESSION['login'] = true && isset($_SESSION['username'])){
 
                     echo '<form method="get" action="event.php">';
                     echo '<input type="hidden" name="eventid" value="' . $row['id'] . '">';
-                    echo '<input type="submit" value="Anmelden">';
+                    echo '<input type="submit" value="Anzeigen">';
                     echo '</form>';
 
                     echo '</div>';
