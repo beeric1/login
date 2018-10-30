@@ -4,7 +4,12 @@
  * User: ericp
  * Date: 03.10.2018
  * Time: 11:03
+ *
+ * TODO event erstellen
+ * TODO eigener Event ansehen
  */
+
+
 
 require_once ('inc/dbconnector.php');
 $user = '';
@@ -62,9 +67,7 @@ if($_SESSION['login']){
         <p>Vorname: <?php echo " $forename"?></p>
         <p>Nachname: <?php echo " $surename"?></p>
         <?php
-            if($_SESSION['admin'] == 1){
-                echo "<p>Du bist Admin!</p>";
-            }
+            if($_SESSION['admin'] == 1){echo "<p>Du bist Admin!</p>";}
         ?>
 
         <h2>Deine Events</h2>

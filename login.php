@@ -101,7 +101,7 @@ if(!empty($_POST)){
 
                 <label>
                     Benutzername: <br>
-                    <input type="text" name="username" value="<?php echo $username?>">
+                    <input type="text" name="username" autofocus="autofocus" value="<?php echo $username?>">
                 </label>
                 <br>
                 <label>

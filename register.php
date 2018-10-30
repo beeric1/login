@@ -118,7 +118,7 @@ if(!empty($_POST)){
 
             <label>
                 Benutzername: (max 25 Zeichen) <br>
-                <input type="text" name="username" value="<?php echo $username?>">
+                <input type="text" autofocus="autofocus" name="username" value="<?php echo $username?>">
             </label>
             <br>
             <label>
