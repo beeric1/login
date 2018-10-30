@@ -8,6 +8,7 @@
 
 require_once ('inc/dbconnector.php');
 $user = '';
+$error = '';
 session_start();
 
 if(isset($_SESSION['login']) && $_SESSION['login'] == 1){
@@ -30,7 +31,108 @@ $dealinetime = '12:00';
 $price = 0;
 $maxPeople = null;
 
+if(!empty($_POST)){
 
+    //mandatory
+    if(!empty($_POST['title'])){
+        $title = trim(htmlspecialchars($_POST['title']));
+    }else{
+        $error .= "Titel muss ausgefüllt sein <br>";
+    }
+
+    //optional
+    if(!empty($_POST['description'])){
+        $description = trim(htmlspecialchars($_POST['description']));
+    }
+
+    //mandatory
+    if(!empty($_POST['startdate'])){
+        $startdate = trim(htmlspecialchars($_POST['startdate']));
+        if(!preg_match("([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))",$startdate)){
+            $error .= "Startdatum ist kein Datum $startdate <br>";
+            $startdate = '';
+        }
+    }else{
+        $error .= "Startdatum muss ausgefüllt sein <br>";
+    }
+    //madatory
+    if(!empty($_POST['starttime'])){
+        $starttime = trim(htmlspecialchars($_POST['starttime']));
+        if(!preg_match("/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/" ,$starttime)){
+            $error .= "Startzeit ist keine Zeit $starttime <br>";
+            $starttime = '';
+        }
+    }else{
+        $error .= "Startzeit muss ausgefüllt sein <br>";
+    }
+
+    //mandatory
+    if(!empty($_POST['enddate'])){
+        $enddate = trim(htmlspecialchars($_POST['enddate']));
+        if(!preg_match("([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))",$enddate)){
+            $error .= "Enddatum ist kein Datum $enddate <br>";
+            $enddate = '';
+        }
+    }else{
+        $error .= "Enddatum muss ausgefüllt sein <br>";
+    }
+    //madatory
+    if(!empty($_POST['endtime'])){
+        $endtime = trim(htmlspecialchars($_POST['endtime']));
+        if(!preg_match("/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/" ,$endtime)){
+            $error .= "Endzeit ist keine Zeit $endtime <br>";
+            $endtime = '';
+        }
+    }else{
+        $error .= "Startzeit muss ausgefüllt sein <br>";
+    }
+
+    //mandatory
+    if(!empty($_POST['dealinedate'])){
+        $dealinedate = trim(htmlspecialchars($_POST['dealinedate']));
+        if(!preg_match("([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))",$dealinedate)){
+            $error .= "Anmeldeschluss-Datum ist kein Datum $dealinedate <br>";
+            $dealinedate = '';
+        }
+    }else{
+        $error .= "Anmeldeschluss-Datum muss ausgefüllt sein <br>";
+    }
+    //madatory
+    if(!empty($_POST['deadlinetime'])){
+        $dealinetime = trim(htmlspecialchars($_POST['deadlinetime']));
+        if(!preg_match("/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/" ,$dealinetime)){
+            $error .= "Deadline-Zeit ist keine Zeit $dealinetime <br>";
+            $dealinetime = '';
+        }
+    }else{
+        $error .= "Startzeit muss ausgefüllt sein <br>";
+    }
+
+    //mandatory
+    if(!empty($_POST['price']) || $_POST['price'] == 0){
+        $price = trim(htmlspecialchars($_POST['price']));
+        if(preg_match("/^\d+(\.\d{1,2})?$/",$price ) && $price < 10000){
+            //ok
+        }else{
+            $error .= "Preis muss eine Zahl kleiner als 10000 sein: $price <br>";
+            $price = 0;
+        }
+    }else{
+        $error .= "Preis muss ausgefüllt sein <br>";
+    }
+
+    //optional
+    if(!empty($_POST['maxPeople'])){
+        $maxPeople = trim(htmlspecialchars($_POST['maxPeople']));
+        if(preg_match("/^\d+$/",$maxPeople )){
+            //ok
+        }else{
+            $error .= "Maximale Teilnehmeranzahl muss eine Zahl sein: $maxPeople <br>";
+            $maxPeople = null;
+        }
+    }
+
+}
 
 ?>
 
@@ -45,7 +147,6 @@ $maxPeople = null;
 <body>
 
     <header>
-
         <h1>Admin-Seite</h1>
     </header>
 
@@ -57,6 +158,10 @@ $maxPeople = null;
     <?php if(!empty($user)){
 
         echo "<p> Hallo, $user </p>";
+
+        if(isset($error)){
+            echo "<p> $error</p>";
+        }
 
     }  ?>
 
@@ -92,12 +197,12 @@ $maxPeople = null;
                 <br>
                 <label>
                     Preis: <br>
-                    <input type="number" name="price" value="<?php echo $price?>">
+                    <input type="number" min="0.00" step="0.01" name="price" value="<?php echo $price?>">
                 </label>
                 <br>
                 <label>
                     Maximale Anzahl Teilnehmer: <br>
-                    <input type="number" name="maxPeople" value="<?php echo $maxPeople?>">
+                    <input type="number" name="maxPeople" min="0.00" value="<?php echo $maxPeople?>">
                 </label>
                 <br>
                 <br>
