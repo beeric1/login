@@ -237,6 +237,21 @@ if(!empty($_POST)){
 
         <h2>Alle Events</h2>
 
+        <?php
+        // get all events
+        $query = "Select id, title, description from event";
+        $result = $db -> query($query);
+        $resultArray = $result -> fetchAll();
+
+    echo '<table>';
+    echo '<tr><th>Titel</th><th>Beschreibung</th><th>Anzeigen</th></tr>';
+        foreach($resultArray as $row){
+            echo "<tr><td>$row[title]</td> <td>$row[description]</td>  <td>";
+            echo "<form method='get' action='eventadmin.php'> <input type='hidden' name='id' value='$row[id]'> <input type='submit' value='Anzeigen'> </form></td>  </tr>";
+        }
+
+        ?>
+
     </main>
 
 </body>
