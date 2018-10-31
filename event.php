@@ -88,11 +88,12 @@ if(!isset($_GET['eventid'])){
             echo "<p> $error </p>";
         }
 
-        echo '<div>';
+        if($error = ''){
+            echo '<div>';
             echo "\n\t\t\t" . '<h2>' . $row['title'] . '</h2> ' . "\n\t\t\t\t";
             if(!empty($description)){
                 echo '<p>' . $row['description'];
-                }
+            }
             echo '<p>Von ' . date_format(date_create($start), 'd.m.Y H:i') .  ' bis ' . date_format(date_create($end), 'd.m.Y H:i');
             echo '<p>Anmeldeschluss: ' . date_format(date_create($deadline), 'd.m.Y H:i');
             echo '<p>Kosten: ' . $price. ' CHF';
@@ -101,15 +102,17 @@ if(!isset($_GET['eventid'])){
                 echo '<p> Maximale Anzahl Teilnehmer: ' . $maxPeople;
             }
 
-        echo '</div>';
+            echo '</div>';
 
-        echo '<p> Willst du dich wirklich für diesen Event anmelden? </p>';
+            echo '<p> Willst du dich wirklich für diesen Event anmelden? </p>';
 
-        echo '<form method="get" action="event.php">';
-        echo '<input type="hidden" name="eventid" value="' . $eventid . '">';
-        echo '<input type="hidden" name="force" value="1">';
-        echo '<input type="submit" value="Anmelden">';
-        echo '</form>';
+            echo '<form method="get" action="event.php">';
+            echo '<input type="hidden" name="eventid" value="' . $eventid . '">';
+            echo '<input type="hidden" name="force" value="1">';
+            echo '<input type="submit" value="Anmelden">';
+            echo '</form>';
+        }
+
         ?>
     </main>
 
